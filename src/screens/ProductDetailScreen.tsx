@@ -15,7 +15,7 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type RootStackParamList = {
-  Home: undefined;
+  Home: { screen?: string };
   ProductDetail: { listing: Listing };
   Cart: undefined;
 };
@@ -42,6 +42,11 @@ export default function ProductDetailScreen() {
   const handleAddToCart = () => {
     if (isSoldOut || isInCart || isOwnListing) return;
     addToCart(listing);
+  };
+  
+  const handleViewCart = () => {
+    // Navigate back to Home and switch to Cart tab
+    navigation.navigate('Home', { screen: 'Cart' });
   };
   
   const handleShare = async () => {
@@ -223,7 +228,7 @@ export default function ProductDetailScreen() {
           </View>
         ) : isInCart ? (
           <Pressable 
-            onPress={() => navigation.navigate('Cart')}
+            onPress={handleViewCart}
             className="flex-1 bg-emerald-600 rounded-full py-4 items-center"
           >
             <Text className="font-semibold text-white">View in Cart</Text>
