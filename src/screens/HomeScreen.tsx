@@ -175,7 +175,7 @@ export default function HomeScreen() {
                       {listing.title}
                     </Text>
                     <Text className="text-gray-500 text-xs mt-1">
-                      {listing.sellerName}
+                      Size {listing.size}
                     </Text>
                     <View className="flex-row items-center justify-between mt-1">
                       <Text className="font-bold text-gray-900">
