@@ -6,21 +6,21 @@ export default function LoadingScreen() {
   return (
     <View className="flex-1 bg-[#1e293b] items-center justify-center px-8">
       {/* Hanger Icon - Custom SVG to match logo */}
-      <View className="mb-8">
-        <Svg width="120" height="100" viewBox="0 0 120 100" fill="none">
+      <View className="mb-8" style={{ paddingTop: 10 }}>
+        <Svg width="140" height="120" viewBox="0 0 140 120" fill="none">
           {/* Hanger hook */}
           <Path
-            d="M 55 10 Q 55 0, 65 0 Q 75 0, 75 10 Q 75 20, 65 25"
+            d="M 65 20 Q 65 8, 70 8 Q 75 8, 75 20 Q 75 32, 70 38"
             stroke="#f3f4f6"
-            strokeWidth="4"
+            strokeWidth="5"
             fill="none"
             strokeLinecap="round"
           />
           {/* Hanger bar */}
           <Path
-            d="M 10 60 L 65 25 L 110 60"
+            d="M 15 75 L 70 38 L 125 75"
             stroke="#f3f4f6"
-            strokeWidth="6"
+            strokeWidth="7"
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
