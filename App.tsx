@@ -1,7 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import React, { useState, useEffect } from "react";
 import AppNavigation from "./src/navigation/AppNavigation";
+import LoadingScreen from "./src/components/LoadingScreen";
 
 /*
 IMPORTANT NOTICE: DO NOT REMOVE
@@ -25,6 +27,28 @@ const openai_api_key = Constants.expoConfig.extra.apikey;
 */
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate app initialization (loading fonts, data, etc.)
+    const initializeApp = async () => {
+      try {
+        // Give the splash screen a moment to display
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      } catch (error) {
+        console.error("Error during app initialization:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeApp();
+  }, []);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
