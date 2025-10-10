@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   View, 
   Text, 
@@ -7,13 +7,18 @@ import {
   TextInput,
   Image,
   Modal,
-  Alert
+  Alert,
+  Animated,
+  Dimensions
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppStore } from '../state/appStore';
 import { ClothingCategory, ClothingSize, ClothingCondition, UPCYCLING_TECHNIQUES } from '../types/models';
 import * as ImagePicker from 'expo-image-picker';
+import { useNavigation } from '@react-navigation/native';
+
+const { width } = Dimensions.get('window');
 
 const CATEGORIES: { value: ClothingCategory; label: string }[] = [
   { value: 'tops', label: 'Tops' },
@@ -29,9 +34,17 @@ const SIZES: ClothingSize[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'One Size'];
 const CONDITIONS: ClothingCondition[] = ['Like New', 'Good', 'Fair'];
 
 export default function SellScreen() {
+  const navigation = useNavigation();
   const currentUser = useAppStore(state => state.currentUser);
   const becomeVerifiedSeller = useAppStore(state => state.becomeVerifiedSeller);
   const addListing = useAppStore(state => state.addListing);
+  
+  // Success animation state
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [createdListing, setCreatedListing] = useState<any>(null);
+  const slideAnim = useRef(new Animated.Value(300)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(0.8)).current;
   
   // Verification state
   const [showVerificationModal, setShowVerificationModal] = useState(false);
@@ -129,7 +142,8 @@ export default function SellScreen() {
       return;
     }
     
-    addListing({
+    // Store the listing data for the animation
+    const newListing = {
       title: title.trim(),
       description: description.trim(),
       price: parseFloat(price),
@@ -139,20 +153,56 @@ export default function SellScreen() {
       images,
       beforeImage: beforeImage || undefined,
       upcyclingTechniques: selectedTechniques,
-    });
+    };
     
-    // Reset form
-    setTitle('');
-    setDescription('');
-    setPrice('');
-    setCategory('tops');
-    setSize('M');
-    setCondition('Good');
-    setImages([]);
-    setBeforeImage('');
-    setSelectedTechniques([]);
+    setCreatedListing(newListing);
     
-    Alert.alert("Success", "Your listing has been created!");
+    addListing(newListing);
+    
+    // Show success animation
+    setShowSuccessModal(true);
+    
+    // Start animations
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        tension: 50,
+        friction: 7,
+        useNativeDriver: true,
+      }),
+    ]).start();
+    
+    // Reset form and navigate after animation
+    setTimeout(() => {
+      setTitle('');
+      setDescription('');
+      setPrice('');
+      setCategory('tops');
+      setSize('M');
+      setCondition('Good');
+      setImages([]);
+      setBeforeImage('');
+      setSelectedTechniques([]);
+      setShowSuccessModal(false);
+      
+      // Reset animations
+      slideAnim.setValue(300);
+      fadeAnim.setValue(0);
+      scaleAnim.setValue(0.8);
+      
+      // Navigate to browse tab to see the listing
+      navigation.navigate('Browse' as never);
+    }, 2500);
   };
   
   // Not logged in
@@ -486,6 +536,67 @@ export default function SellScreen() {
           <Text className="text-white font-semibold text-lg">List Item</Text>
         </Pressable>
       </ScrollView>
+      
+      {/* Success Modal */}
+      <Modal
+        visible={showSuccessModal}
+        transparent
+        animationType="none"
+      >
+        <View className="flex-1 bg-black/50 items-center justify-center px-6">
+          <Animated.View 
+            style={{
+              opacity: fadeAnim,
+              transform: [
+                { translateY: slideAnim },
+                { scale: scaleAnim }
+              ],
+              width: width - 48,
+            }}
+            className="bg-white rounded-3xl p-6 items-center"
+          >
+            {/* Success Icon */}
+            <View className="w-20 h-20 bg-emerald-100 rounded-full items-center justify-center mb-4">
+              <Ionicons name="checkmark-circle" size={48} color="#10B981" />
+            </View>
+            
+            <Text className="text-gray-900 text-2xl font-bold mb-2 text-center">
+              Listing Created!
+            </Text>
+            <Text className="text-gray-500 text-center mb-6">
+              Your upcycled item is now live on Dezyne
+            </Text>
+            
+            {/* Preview Card */}
+            {createdListing && (
+              <View className="w-full bg-gray-50 rounded-2xl p-4 mb-4">
+                <View className="flex-row">
+                  <Image
+                    source={{ uri: createdListing.images[0] }}
+                    className="w-20 h-20 rounded-xl bg-gray-200"
+                    resizeMode="cover"
+                  />
+                  <View className="flex-1 ml-4">
+                    <Text className="font-bold text-gray-900 mb-1" numberOfLines={1}>
+                      {createdListing.title}
+                    </Text>
+                    <Text className="text-emerald-600 font-bold text-lg mb-1">
+                      ${createdListing.price}
+                    </Text>
+                    <Text className="text-gray-500 text-sm">
+                      You earn: ${(createdListing.price * 0.93).toFixed(2)} (93%)
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            )}
+            
+            <Text className="text-gray-400 text-sm text-center">
+              Redirecting to your listings...
+            </Text>
+          </Animated.View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
