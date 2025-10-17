@@ -5,6 +5,7 @@
       "name": "template-app-53",
       "dependencies": {
         "@anthropic-ai/sdk": "^0.39.0",
+        "@expo/metro-runtime": "~5.0.5",
         "@expo/react-native-action-sheet": "^4.1.1",
         "@expo/vector-icons": "^14.1.0",
         "@gorhom/bottom-sheet": "^5",
@@ -472,6 +473,8 @@
     "@expo/logger": ["@expo/logger@1.0.221", "", { "dependencies": { "@types/bunyan": "^1.8.11", "bunyan": "^1.8.15" } }, "sha512-arNkhzq4Ludz9J7PIYWTVYXuT1bO/A8prR8HYAviKuF6fEZfitemNVriGSetQASOE8Vnv3lmBZv6YIwLiFuv/Q=="],
 
     "@expo/metro-config": ["@expo/metro-config@0.20.14", "", { "dependencies": { "@babel/core": "^7.20.0", "@babel/generator": "^7.20.5", "@babel/parser": "^7.20.0", "@babel/types": "^7.20.0", "@expo/config": "~11.0.9", "@expo/env": "~1.0.5", "@expo/json-file": "~9.1.4", "@expo/spawn-async": "^1.7.2", "chalk": "^4.1.0", "debug": "^4.3.2", "dotenv": "~16.4.5", "dotenv-expand": "~11.0.6", "getenv": "^1.0.0", "glob": "^10.4.2", "jsc-safe-url": "^0.2.4", "lightningcss": "~1.27.0", "minimatch": "^9.0.0", "postcss": "~8.4.32", "resolve-from": "^5.0.0" } }, "sha512-tYDDubuZycK+NX00XN7BMu73kBur/evOPcKfxc+UBeFfgN2EifOITtdwSUDdRsbtJ2OnXwMY1HfRUG3Lq3l4cw=="],
+
+    "@expo/metro-runtime": ["@expo/metro-runtime@5.0.5", "", { "peerDependencies": { "react-native": "*" } }, "sha512-P8UFTi+YsmiD1BmdTdiIQITzDMcZgronsA3RTQ4QKJjHM3bas11oGzLQOnFaIZnlEV8Rrr3m1m+RHxvnpL+t/A=="],
 
     "@expo/multipart-body-parser": ["@expo/multipart-body-parser@2.0.0", "", { "dependencies": { "multipasta": "^0.2.5" } }, "sha512-yS/wsqlj0d8ZKETEN7ro3dZtjdMhpte8wp+xUzjUQC3jizxcE0E62xgvGquJObiYUMGoCF5qRYr2t78STPEaSw=="],
 
