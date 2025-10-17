@@ -20,19 +20,22 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(tsx?|jsx?)$/,
-        exclude: /node_modules/,
+        test: /\.(tsx?|jsx?|js)$/,
+        exclude: /node_modules\/(?!(@expo|expo|@react-navigation|react-native|@react-native|react-native-reanimated|react-native-screens|react-native-safe-area-context|react-native-gesture-handler|react-native-svg)\/).*/,
         use: {
           loader: 'babel-loader',
           options: {
             presets: [
-              '@babel/preset-env',
+              ['@babel/preset-env', { loose: true }],
               '@babel/preset-react',
               '@babel/preset-typescript',
             ],
             plugins: [
               'react-native-web',
               ['@babel/plugin-proposal-decorators', { legacy: true }],
+              ['@babel/plugin-transform-class-properties', { loose: true }],
+              ['@babel/plugin-transform-private-methods', { loose: true }],
+              ['@babel/plugin-transform-private-property-in-object', { loose: true }],
             ],
           },
         },
