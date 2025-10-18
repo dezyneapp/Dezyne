@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 import { 
   User, 
   Listing, 
@@ -423,7 +424,14 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'dezyne-storage',
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => Platform.OS === 'web' 
+        ? {
+            getItem: async (name: string) => localStorage.getItem(name),
+            setItem: async (name: string, value: string) => localStorage.setItem(name, value),
+            removeItem: async (name: string) => localStorage.removeItem(name),
+          }
+        : AsyncStorage
+      ),
       partialize: (state) => ({
         currentUser: state.currentUser,
         users: state.users,
