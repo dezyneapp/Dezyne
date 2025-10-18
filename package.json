@@ -9,7 +9,7 @@
     "web": "expo start --web",
     "web:dev": "webpack serve --mode development",
     "web:build": "webpack --mode production",
-    "build": "expo export"
+    "build": "expo export --platform web"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
