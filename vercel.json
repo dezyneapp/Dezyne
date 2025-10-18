@@ -1,11 +1,4 @@
 {
   "buildCommand": "bun run build",
-  "outputDirectory": "dist",
-  "cleanUrls": false,
-  "rewrites": [
-    {
-      "source": "/((?!_expo|assets).*)",
-      "destination": "/index.html"
-    }
-  ]
+  "outputDirectory": "dist"
 }
