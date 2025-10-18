@@ -2,8 +2,12 @@
 console.log("[index] Project ID is: ", process.env.EXPO_PUBLIC_VIBECODE_PROJECT_ID);
 import "./global.css";
 import "react-native-get-random-values";
-import { LogBox } from "react-native";
-LogBox.ignoreLogs(["Expo AV has been deprecated", "Disconnected from Metro"]);
+import { Platform, LogBox } from "react-native";
+
+// Only use LogBox on native platforms
+if (Platform.OS !== "web") {
+  LogBox.ignoreLogs(["Expo AV has been deprecated", "Disconnected from Metro"]);
+}
 
 import { registerRootComponent } from "expo";
 
